@@ -52,13 +52,11 @@
 
 	try{
 
-		require($config['SITE']['dir_site'] . 'application/php/libs/smarty/Smarty.class.php');
+		require_once $config['SITE']['dir_site'] . 'application/php/libs/smarty/Smarty.class.php';
 
 		spl_autoload_register('load_libs');
 
-		$smarty = new Smarty();
-
-		$app = Application::init($config, $smarty);
+		$app = Application::init($config);
 
 		$uri = $app->explode_url($_SERVER['REQUEST_URI']);
 		$app->set_lang($uri);
@@ -67,6 +65,5 @@
 	}catch(K_error $e){
 
 		$e->get_decorate_message();
-		//echo '<p style="color:red">' . $e->getMessage() . '</p>';
 
 	}//fin catch

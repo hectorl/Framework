@@ -63,13 +63,32 @@ class Application {
 	 *
 	 * @param array $config Configuration from .ini files
 	 */
-	private function __construct ($config, $smarty) {
+	private function __construct ($config) {
 
-		$this->smarty = $smarty;
+		$this->smarty = new Smarty();
 
 		$this->_set_routes($config);
 
 	}//end __construct
+
+
+	/**
+	 * Init class for instantiate Application object
+	 *
+	 * @param array $config Configuration from .ini files
+	 */
+	public static function init($config) {
+
+    	if (!isset(self::$instance)) {
+
+            $obj = __CLASS__;
+        	self::$instance = new $obj($config);
+
+        }//end if
+
+    	return self::$instance;
+
+	}//end init
 
 
 	/**
@@ -150,26 +169,6 @@ class Application {
 		return $uri;
 
 	}//end explode_url
-
-
-
-	/**
-	 * Init class for instantiate Application object
-	 *
-	 * @param array $config Configuration from .ini files
-	 */
-	public static function init($config, $smarty) {
-
-    	if (!isset(self::$instance)) {
-
-            $obj = __CLASS__;
-        	self::$instance = new $obj($config, $smarty);
-
-        }//end if
-
-    	return self::$instance;
-
-	}//end init
 
 
     /**
@@ -294,19 +293,24 @@ class Application {
 	public function _set_routes ($config) {
 
 		self::$config      = $config;
-		self::$controllers = self::$config['SITE']['dir_site'] . 'application/controllers/';
-		self::$models      = self::$config['SITE']['dir_site'] . 'application/models/';
-		self::$views       = self::$config['SITE']['dir_site'] . 'application/views/';
 
-		self::$config['SITE']['url_img'] = self::$config['SITE']['url_site'] . 'application/views/img/';
-		self::$config['SITE']['url_css'] = self::$config['SITE']['url_site'] . 'application/views/css/';
-		self::$config['SITE']['url_js']  = self::$config['SITE']['url_site'] . 'application/views/js/';
-		self::$config['SITE']['url_upl'] = self::$config['SITE']['url_site'] . 'uploads/';
+		$dir = self::$config['SITE']['dir_site'];
+		$url = self::$config['SITE']['url_site'];
 
-		$this->smarty->setTemplateDir(self::$config['SITE']['dir_site'] . 'application/views/pages/templates/');
-		$this->smarty->setCompileDir(self::$config['SITE']['dir_site'] . 'application/views/pages/templates_c/');
-		$this->smarty->setConfigDir(self::$config['SITE']['dir_site'] . 'application/views/pages/configs/');
-		$this->smarty->setCacheDir(self::$config['SITE']['dir_site'] . 'application/views/pages/cache/');
+		self::$controllers = $dir . 'application/controllers/';
+		self::$models      = $dir . 'application/models/';
+		self::$views       = $dir . 'application/views/';
+
+		$this->smarty->assign('URL', $url);
+		$this->smarty->assign('IMG', $url . 'application/views/img/');
+		$this->smarty->assign('CSS', $url . 'application/views/css/');
+		$this->smarty->assign('JS',  $url . 'application/views/js/');
+		$this->smarty->assign('UPL', $url . 'uploads/');
+
+		$this->smarty->setTemplateDir($dir . 'application/views/pages/templates/');
+		$this->smarty->setCompileDir($dir . 'application/views/pages/templates_c/');
+		$this->smarty->setConfigDir($dir . 'application/views/pages/configs/');
+		$this->smarty->setCacheDir($dir . 'application/views/pages/cache/');
 
 	}//end _set_routes
 
