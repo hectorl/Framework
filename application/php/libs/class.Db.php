@@ -2,7 +2,8 @@
 /**
  * Singleton to create an instance of PDO
  */
-class Db extends APPLICATION{
+
+class Db extends Application{
 
 	/**
 	 * Instance of the DB class

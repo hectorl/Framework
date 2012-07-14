@@ -3,7 +3,9 @@
 /**
  * @author		http://snipplr.com/view.php?codeview&id=35627
  */
-class Browser extends APPLICATION {
+
+
+class Browser extends Application {
 
 	private $props = array("Version" => "0.0.0",
                              "Name" => "unknown",

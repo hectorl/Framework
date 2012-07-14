@@ -3,6 +3,7 @@
  * Core app class
  *
  */
+
 class Application {
 
 	/**
@@ -54,13 +55,17 @@ class Application {
 	 */
 	static protected $lang;
 
+	private $smarty;
+
 
 	/**
 	 * Fill the config attribute and check the URL for loading controllers
 	 *
 	 * @param array $config Configuration from .ini files
 	 */
-	private function __construct ($config) {
+	private function __construct ($config, $smarty) {
+
+		$this->smarty = $smarty;
 
 		$this->_set_routes($config);
 
@@ -153,12 +158,12 @@ class Application {
 	 *
 	 * @param array $config Configuration from .ini files
 	 */
-	public static function init($config) {
+	public static function init($config, $smarty) {
 
     	if (!isset(self::$instance)) {
 
             $obj = __CLASS__;
-        	self::$instance = new $obj($config);
+        	self::$instance = new $obj($config, $smarty);
 
         }//end if
 
@@ -219,9 +224,9 @@ class Application {
 
 			}//end if
 
-		}//end else
+		}//end elseNo
 
-		$controller = new $class();
+		$controller = new $class($this->smarty);
 
 		if (method_exists($controller, $uri['method'])) {
 
@@ -276,7 +281,7 @@ class Application {
 	 */
 	function load_model($model) {
 
-		$this->$model = new $model();
+		$this->$model = new $model;
 
 	}//end load_model
 
@@ -297,6 +302,11 @@ class Application {
 		self::$config['SITE']['url_css'] = self::$config['SITE']['url_site'] . 'application/views/css/';
 		self::$config['SITE']['url_js']  = self::$config['SITE']['url_site'] . 'application/views/js/';
 		self::$config['SITE']['url_upl'] = self::$config['SITE']['url_site'] . 'uploads/';
+
+		$this->smarty->setTemplateDir(self::$config['SITE']['dir_site'] . 'application/views/pages/templates/');
+		$this->smarty->setCompileDir(self::$config['SITE']['dir_site'] . 'application/views/pages/templates_c/');
+		$this->smarty->setConfigDir(self::$config['SITE']['dir_site'] . 'application/views/pages/configs/');
+		$this->smarty->setCacheDir(self::$config['SITE']['dir_site'] . 'application/views/pages/cache/');
 
 	}//end _set_routes
 

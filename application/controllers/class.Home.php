@@ -3,12 +3,20 @@
  * Control class to load all the initial information
  *
  */
-class Home extends Application{
+
+class Home extends Application {
+
+	/**
+	 *
+	 */
+	private $smarty;
 
 	/**
 	 * Class constructor
 	 */
-	public function __construct () {
+	public function __construct ($smarty) {
+
+		$this->smarty = $smarty;
 
 		$this->load_model('Home_m');
 
@@ -20,9 +28,10 @@ class Home extends Application{
 	 */
 	public function index () {
 
-		$data['items'] = $this->Home_m->get_test_data();
+		//$smarty = $this->get_smarty();
 
-		$this->load_view('home', $data);
+		$this->smarty->assign('items', $this->Home_m->get_test_data());
+		$this->smarty->display('home.tpl');
 
 	}//end index
 

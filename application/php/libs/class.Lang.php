@@ -3,6 +3,7 @@
  * Class for lang management
  *
  */
+
 class Lang {
 
 	/**

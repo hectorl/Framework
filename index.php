@@ -16,23 +16,49 @@
 	//Nos ahorramos el tener que controlar el flujo en la función __autoload
 	set_include_path($config['SITE']['dir_site'] . 'application/controllers/' . PATH_SEPARATOR .
 					 $config['SITE']['dir_site'] . 'application/models/'      . PATH_SEPARATOR .
-		             $config['SITE']['dir_site'] . 'application/php/libs/'    . PATH_SEPARATOR .
-				     $config['SITE']['dir_site'] . 'application/php/libs/'    . 'PHPMAILER');
+		             $config['SITE']['dir_site'] . 'application/php/libs/');
 
 	/**
 	 * Carga las librerías según se van necesitando
 	 *
-	 * @param	string	$lib		Nombre de la clase que se quiere cargar
+	 * @param	string	$class		Nombre de la clase que se quiere cargar
 	 */
-	function __autoload($lib){
+	function load_libs ($class){
 
-		require('class.' . $lib . '.php');
+		try {
+
+			$found = stream_resolve_include_path('class.' . $class . '.php');
+
+    		if($found !== false) {
+
+				require_once 'class.' . $class . '.php';
+
+			} else {
+
+				throw new K_error('Class <b>class.' . $class . '.php</b> does not exist.');
+
+			}//end else
+
+		} catch (K_error $e) {
+
+			echo $e->get_decorate_message();
+			die();
+
+		}//end catch
 
 	}//fin __autoload
 
+
+
 	try{
 
-		$app = Application::init($config);
+		require($config['SITE']['dir_site'] . 'application/php/libs/smarty/Smarty.class.php');
+
+		spl_autoload_register('load_libs');
+
+		$smarty = new Smarty();
+
+		$app = Application::init($config, $smarty);
 
 		$uri = $app->explode_url($_SERVER['REQUEST_URI']);
 		$app->set_lang($uri);

@@ -2,6 +2,7 @@
 /**
  * Home model
  */
+
 class Home_m {
 
 	/**
@@ -29,6 +30,8 @@ class Home_m {
 				array('id' => 5, 'title' => 'Título 5')
 
 			);
+
+
 $db = Db::init('localhost', 'test', 'root', 'mysqlgerty');
 $db->prepare('SELECT * FROM posts');
 		return $data;
