@@ -4,7 +4,8 @@
  *
  */
 
-class Home extends Application {
+class Home extends Application
+{
 
 	/**
 	 *
@@ -28,11 +29,16 @@ class Home extends Application {
 	 */
 	public function index () {
 
-		//$smarty = $this->get_smarty();
+		$this->smarty->caching = true;
 
-		$this->smarty->assign('items', $this->Home_m->get_test_data());
-		$this->smarty->debugging = true;
-		$this->smarty->display('home.tpl');
+		if (!$this->smarty->isCached('home.tpl', parent::$lang->lang)) {
+
+			$this->smarty->assign('lang_code', parent::$lang->lang);
+			$this->smarty->assign('items', $this->Home_m->get_test_data());
+
+		}//end if
+
+		$this->smarty->display('home.tpl', parent::$lang->lang);
 
 	}//end index
 

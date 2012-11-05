@@ -1,71 +1,71 @@
 <?php
 
-	header('Content-type: text/html; charset=utf-8');
+header('Content-type: text/html; charset=utf-8');
 
-	//incluimos los archivos de configuración
-	$config = parse_ini_file('configs/config.ini', true);
-	$config = array_merge(parse_ini_file("configs/config-{$config['env']}.ini", true), $config);
+//incluimos los archivos de configuración
+$config = parse_ini_file('configs/config.ini', true);
+$config = array_merge(parse_ini_file("configs/config-{$config['env']}.ini", true), $config);
 
-	if($config['show_errors']){
+if($config['show_errors']){
 
-		error_reporting(E_ALL);
-		ini_set('display_errors', '1');
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
 
-	}//fin if
+}//fin if
 
-	//Nos ahorramos el tener que controlar el flujo en la función __autoload
-	set_include_path($config['SITE']['dir_site'] . 'application/controllers/' . PATH_SEPARATOR .
-					 $config['SITE']['dir_site'] . 'application/models/'      . PATH_SEPARATOR .
-		             $config['SITE']['dir_site'] . 'application/php/libs/');
+//Nos ahorramos el tener que controlar el flujo en la función __autoload
+set_include_path($config['SITE']['dir_site'] . 'application/controllers/' . PATH_SEPARATOR .
+				 $config['SITE']['dir_site'] . 'application/models/'      . PATH_SEPARATOR .
+	             $config['SITE']['dir_site'] . 'application/php/libs/');
 
-	ini_set('date.timezone', $config['SITE']['timezone']);
+ini_set('date.timezone', $config['SITE']['timezone']);
 
-	/**
-	 * Carga las librerías según se van necesitando
-	 *
-	 * @param	string	$class		Nombre de la clase que se quiere cargar
-	 */
-	function load_libs ($class){
+/**
+ * Carga las librerías según se van necesitando
+ *
+ * @param	string	$class		Nombre de la clase que se quiere cargar
+ */
+function load_libs ($class){
 
-		try {
+	try {
 
-			$found = stream_resolve_include_path('class.' . $class . '.php');
+		$found = stream_resolve_include_path('class.' . $class . '.php');
 
-    		if($found !== false) {
+		if($found !== false) {
 
-				require_once 'class.' . $class . '.php';
+			require_once 'class.' . $class . '.php';
 
-			} else {
+		} else {
 
-				throw new K_error('Class <b>class.' . $class . '.php</b> does not exist.');
+			throw new K_error('Class <b>class.' . $class . '.php</b> does not exist.');
 
-			}//end else
+		}//end else
 
-		} catch (K_error $e) {
+	} catch (K_error $e) {
 
-			echo $e->get_decorate_message();
-			die();
+		echo $e->get_decorate_message();
+		die();
 
-		}//end catch
+	}//end catch
 
-	}//fin __autoload
+}//end __autoload
 
 
 
-	try{
+try{
 
-		require_once $config['SITE']['dir_site'] . 'application/php/libs/smarty/Smarty.class.php';
+	require_once $config['SITE']['dir_site'] . 'application/php/libs/smarty/Smarty.class.php';
 
-		spl_autoload_register('load_libs');
+	spl_autoload_register('load_libs');
 
-		$app = Application::init($config);
+	$app = Application::init($config);
 
-		$uri = $app->explode_url($_SERVER['REQUEST_URI']);
-		$app->set_lang($uri);
-		$app->load_controller($uri);
+	$uri = $app->explode_url($_SERVER['REQUEST_URI']);
+	$app->set_lang($uri);
+	$app->load_controller($uri);
 
-	}catch(K_error $e){
+}catch(K_error $e){
 
-		$e->get_decorate_message();
+	$e->get_decorate_message();
 
-	}//fin catch
+}//end catch

@@ -241,39 +241,6 @@ class Application {
 
 
 	/**
-	 * Gets vars from array, the lang information and loads the view
-	 *
-	 * @param string $view Name of view
-	 * @param array $vars All variables used in the view
-	 * @param array $email Sets if the view is an email or not
-	 */
-	function load_view($view, $vars = null, $email = false) {
-
-		$cfg = self::$config['SITE'];
-
-		if (is_array($vars) && sizeof($vars) > 0) {
-
-			extract($vars, EXTR_PREFIX_SAME, self::VAR_PREFIX);
-
-		}//end if
-
-		$t      = self::$lang->t;
-		$t_code = self::$lang->lang;
-
-		if (!$email) {
-
-			require_once self::$views . 'pages/' . self::$prefix . '.' . $view . '.phtml';
-
-		} else {
-
-			require_once self::$views . 'emails/' . 'email.' . $view . '.phtml';
-
-		}//end else
-
-	}//end load_view
-
-
-	/**
 	 * Loads the model
 	 *
 	 * @param string $model Name of model
@@ -292,7 +259,7 @@ class Application {
 	 */
 	public function _set_routes ($config) {
 
-		self::$config      = $config;
+		self::$config = $config;
 
 		$dir = self::$config['SITE']['dir_site'];
 		$url = self::$config['SITE']['url_site'];
