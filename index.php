@@ -13,10 +13,11 @@ if($config['show_errors']){
 
 }//fin if
 
+define('DIR_SITE', $config['SITE']['dir_site']);
+
 //Nos ahorramos el tener que controlar el flujo en la función __autoload
-set_include_path($config['SITE']['dir_site'] . 'application/controllers/' . PATH_SEPARATOR .
-				 $config['SITE']['dir_site'] . 'application/models/'      . PATH_SEPARATOR .
-	             $config['SITE']['dir_site'] . 'application/php/libs/');
+set_include_path(DIR_SITE . 'application/' . PATH_SEPARATOR .
+	             DIR_SITE . 'application/php/libs/');
 
 ini_set('date.timezone', $config['SITE']['timezone']);
 
@@ -29,11 +30,24 @@ function load_libs ($class){
 
 	try {
 
-		$found = stream_resolve_include_path('class.' . $class . '.php');
+		if (strpos($class, '\\')) {
+
+			$class_pieces = explode('\\', $class);
+			$dir = DIR_SITE . 'application/' . $class_pieces[0] . '/';
+			$class = $class_pieces[1];
+
+		} else {
+
+			$dir = '';
+			$class = $class;
+
+		}//end if
+
+		$found = stream_resolve_include_path($dir . 'class.' . $class . '.php');
 
 		if($found !== false) {
 
-			require_once 'class.' . $class . '.php';
+			require_once $dir . 'class.' . $class . '.php';
 
 		} else {
 
@@ -50,11 +64,9 @@ function load_libs ($class){
 
 }//end __autoload
 
-
-
 try{
 
-	require_once $config['SITE']['dir_site'] . 'application/php/libs/smarty/Smarty.class.php';
+	require_once DIR_SITE . 'application/php/libs/smarty/Smarty.class.php';
 
 	spl_autoload_register('load_libs');
 

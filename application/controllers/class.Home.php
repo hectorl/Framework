@@ -4,6 +4,10 @@
  *
  */
 
+namespace controllers;
+
+use Application;
+
 class Home extends Application
 {
 
@@ -19,7 +23,7 @@ class Home extends Application
 
 		$this->smarty = $smarty;
 
-		$this->load_model('Home_m');
+		$this->load_model('Home');
 
 	}//end __construct
 
@@ -29,12 +33,12 @@ class Home extends Application
 	 */
 	public function index () {
 
-		$this->smarty->caching = true;
+		$this->smarty->caching = false;
 
 		if (!$this->smarty->isCached('home.tpl', parent::$lang->lang)) {
 
 			$this->smarty->assign('lang_code', parent::$lang->lang);
-			$this->smarty->assign('items', $this->Home_m->get_test_data());
+			$this->smarty->assign('items', $this->mHome->get_test_data());
 
 		}//end if
 

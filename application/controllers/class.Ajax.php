@@ -32,5 +32,4 @@ class Ajax extends Application {
 
 	}//end get_ajax_content
 
-
 }//end Ajax

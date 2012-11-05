@@ -225,7 +225,11 @@ class Application {
 
 		}//end elseNo
 
-		$controller = new $class($this->smarty);
+		$namespaced_controller = '\controllers\\' . $class;
+
+		$controller = new $namespaced_controller($this->smarty);
+
+		//$controller = new $class($this->smarty);
 
 		if (method_exists($controller, $uri['method'])) {
 
@@ -247,7 +251,10 @@ class Application {
 	 */
 	function load_model($model) {
 
-		$this->$model = new $model;
+		$mModel = "m" . $model;
+		$namespaced_model = "\models\\" . $model;
+
+		$this->$mModel = new $namespaced_model;
 
 	}//end load_model
 
