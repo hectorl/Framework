@@ -1,6 +1,6 @@
 <?php
 /**
- * Static class to use HELPERS. User: HELPER::[name_of_helper([param1], [param2], [...])]
+ * Static class to use HELPERS. User: HELPER::[name_of_helper([param1, param2, ...])]
  */
 class HELPER extends APPLICATION {
 

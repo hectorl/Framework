@@ -1,6 +1,6 @@
-$(document).ready( function () {
+$(document).ready(function () {
 
-	$('#btn-ajax').click( function () {
+	$('#btn-ajax').click(function () {
 
 		var params = {
 				param1: 'val1',
@@ -8,7 +8,7 @@ $(document).ready( function () {
 				param3: ['aaa', 'bbb']
 			};
 
-		//Do not forget the final slash at the end of the URL!!!
+		//Do not forget the final slash at the end of the URL!
 		$.getJSON(URL_SITE + 'ajax/get_ajax_content/', params, function (data) {
 
 			if (data) {
@@ -25,4 +25,4 @@ $(document).ready( function () {
 
 	});//end click
 
-});
+});//end ready

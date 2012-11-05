@@ -23,25 +23,60 @@
 </head>
 
 <body>
+
 	<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
-	<h1>Home</h1>
+	<h1>Contacto</h1>
 
-	<p>Esta es la vista de la home.</p>
+	<p>Ejemplo de formulario de contacto.</p>
 
-	<p><a href="{$URL}contacto">Ejemplo de página de contacto</a></p>
+	<form id="contact-from" method="post" action="{$URL}contacto/send">
 
-	<h2>Esta es la información cargada a través del modelo de la home:</h2>
+		<fieldset>
 
-	<h2>Prueba a cargar algo por AJAX:</h2>
+			<legend>Rellena el formulario</legend>
 
-	<p><button type="button" name="btn-ajax" id="btn-ajax">Haz click aquí!</button></p>
+			<ul>
 
-	<div id="ajax-wrap">&nbsp;</div>
+				<li>
+
+					<label>Nombre:</label>
+					<input type="text" name="name" id="name">
+
+				</li>
+
+				<li>
+
+					<label>Mensaje:</label>
+					<textarea name="msg" id="msg" rows="5" cols="10"></textarea>
+
+				</li>
+
+			</ul>
+
+			<p><input type="submit" name="btn-enviar" id="btn-enviar" value="Enviar"></p>
+
+		</fieldset>
+
+	</form>
+
+	{nocache}
+
+		{if isset($name)}
+
+			<h2>Información enviada mediante post:</h2>
+
+			<p><b>Nombre:</b> {$name}</p>
+			<p><b>Mensaje:</b></p>
+			<p>{$msg|nl2br}</p>
+
+		{/if}
+
+	{/nocache}
+
 
 	<script>
 
-		//Variable global a la que pasamos la URL del site para usarla en todos los js
 		var URL_SITE = "{$URL}";
 
 	</script>
@@ -58,25 +93,25 @@
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
 		<script src="{$JS}libs/innershiv.js" type="text/javascript"></script>
 		<script type="text/javascript">
-			{literal}
-				jQuery.ajaxSetup({
 
-					dataFilter: function(data, dataType) {
+			jQuery.ajaxSetup({
 
-						if (typeof innerShiv === 'function' && dataType === 'html') {
+				dataFilter: function(data, dataType) {
 
-							return innerShiv(data);
+					if (typeof innerShiv === 'function' && dataType === 'html') {
 
-						} else {
+						return innerShiv(data);
 
-							return data;
+					} else {
 
-						}//end else
+						return data;
 
-					}//end dataFilter
+					}//end else
 
-				});//end ajaxSetup
-			{/literal}
+				}//end dataFilter
+
+			});//end ajaxSetup
+
 		</script>
 
 	<![endif]-->

@@ -1,5 +1,9 @@
 <?php
 
+namespace controllers;
+
+use Application;
+
 class Ajax extends Application {
 
 	/**
@@ -24,9 +28,9 @@ class Ajax extends Application {
 	 */
 	public function get_ajax_content () {
 
-		$this->load_model('Home_m');
+		$this->load_model('Home');
 
-		$data = $this->Home_m->get_more_data();
+		$data = $this->Home->get_more_data();
 
 		echo json_encode($data);
 

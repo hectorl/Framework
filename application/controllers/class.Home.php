@@ -37,8 +37,7 @@ class Home extends Application
 
 		if (!$this->smarty->isCached('home.tpl', parent::$lang->lang)) {
 
-			$this->smarty->assign('lang_code', parent::$lang->lang);
-			$this->smarty->assign('items', $this->mHome->get_test_data());
+			$this->smarty->assign('items', $this->Home->get_test_data());
 
 		}//end if
 

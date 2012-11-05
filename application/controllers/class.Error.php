@@ -1,16 +1,31 @@
 <?php
 
-class Error extends Application {
+namespace controllers;
 
-	public function __construct () {
+use Application;
 
-	}
+class Error extends Application
+{
+
+	/**
+	 *
+	 */
+	private $smarty;
+
+
+	public function __construct ($smarty) {
+
+		$this->smarty = $smarty;
+
+	}//end __construct
 
 
 	/**
 	 *
 	 */
 	public function index ($param = null) {
+
+		$this->smarty->caching = true;
 
 		switch ($param['error_type']) {
 
@@ -19,7 +34,7 @@ class Error extends Application {
 				header("HTTP/1.1 404 Not Found");
 				header("Status: 404 Not Found");
 
-				$this->load_view('404');
+				$this->smarty->display('error_404.tpl', parent::$lang->lang);
 
 				break;
 

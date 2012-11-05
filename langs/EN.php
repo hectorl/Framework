@@ -6,6 +6,7 @@
 
 $t = array (
 
-	'hello_world' => 'Hello World'
+	'hello_world' => 'Hello World',
+	'maintenance' => 'Maintenance'
 
 );

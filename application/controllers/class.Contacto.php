@@ -1,13 +1,32 @@
 <?php
 
-class Contacto extends Application {
+namespace controllers;
 
-	public function __construct () {}
+use Application;
+
+class Contacto extends Application
+{
+
+	/**
+	 *
+	 */
+	private $smarty;
+
+	/**
+	 *
+	 */
+	public function __construct ($smarty) {
+
+		$this->smarty = $smarty;
+
+	}//end __construct
 
 
 	public function index () {
 
-		$this->load_view('contacto');
+		$this->smarty->caching = true;
+
+		$this->smarty->display('contacto.tpl', parent::$lang->lang);
 
 	}//end index
 
@@ -17,15 +36,16 @@ class Contacto extends Application {
 	 */
 	public function send () {
 
-		$data = array();
+		$this->smarty->caching = true;
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-			$data = array('name' => $_POST['name'], 'msg' => $_POST['msg']);
+			$this->smarty->assign('name', $_POST['name']);
+			$this->smarty->assign('msg', $_POST['msg']);
 
 		}//end if
 
-		$this->load_view('contacto', $data);
+		$this->smarty->display('contacto.tpl', parent::$lang->lang);
 
 	}//end index
 

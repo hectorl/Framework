@@ -107,6 +107,9 @@ class Application {
 			self::$lang = new Lang();
 			self::$lang->get_lang_file();
 
+			$this->smarty->assign('lang_code', self::$lang->lang);
+			$this->smarty->assign('t', self::$lang->t);
+
 		}//end else
 
 	}//end set_lang
@@ -115,7 +118,7 @@ class Application {
 
 	/**
 	 *
-	 **/
+	 */
 	public function explode_url ($url) {
 
 		$uri = array('controller' => self::DEFAULT_VIEW, 'method' => '', 'var' => '');
@@ -191,16 +194,13 @@ class Application {
 	 */
 	function load_controller($uri) {
 
-		//self::$lang = new Lang();
-		//self::$lang->get_lang_file();
-
 		$class = ucfirst($uri['controller']);
 
 		$browser = new Browser(array('msie' => array(6, 7)));
 
 		if (self::$config['maintenance']) {
 
-			$class = 'Maintenace';
+			$class = 'Maintenance';
 
 		} elseif (!$browser->supported()) {
 
@@ -211,8 +211,6 @@ class Application {
 
 			$class = 'Browser_not_compatible';
 			$uri['var'] = $data;
-
-			//$this->load_view('browser_not_compatible', $data);
 
 		} else {
 
@@ -225,7 +223,7 @@ class Application {
 
 		}//end elseNo
 
-		$namespaced_controller = '\controllers\\' . $class;
+		$namespaced_controller = "\controllers\\" . $class;
 
 		$controller = new $namespaced_controller($this->smarty);
 
@@ -251,10 +249,9 @@ class Application {
 	 */
 	function load_model($model) {
 
-		$mModel = "m" . $model;
 		$namespaced_model = "\models\\" . $model;
 
-		$this->$mModel = new $namespaced_model;
+		$this->$model = new $namespaced_model;
 
 	}//end load_model
 

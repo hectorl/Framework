@@ -1,11 +1,23 @@
 <?php
 
-class Maintenance extends Application {
+namespace controllers;
+
+use Application;
+
+class Maintenance extends Application
+{
 
 	/**
 	 *
 	 */
-	public function __construct () {
+	private $smarty;
+
+	/**
+	 *
+	 */
+	public function __construct ($smarty) {
+
+		$this->smarty = $smarty;
 
 	}//end __construct
 
@@ -15,7 +27,9 @@ class Maintenance extends Application {
 	 */
 	public function index () {
 
-		$this->load_view('maintenance');
+		$this->smarty->caching = true;
+
+		$this->smarty->display('maintenance.tpl', parent::$lang->lang);
 
 	}//end index
 
