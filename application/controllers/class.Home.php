@@ -31,6 +31,7 @@ class Home extends Application {
 		//$smarty = $this->get_smarty();
 
 		$this->smarty->assign('items', $this->Home_m->get_test_data());
+		$this->smarty->debugging = true;
 		$this->smarty->display('home.tpl');
 
 	}//end index

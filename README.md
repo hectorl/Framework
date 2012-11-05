@@ -1,7 +1,7 @@
 Framework
 =========
 
-Framework sencillo para la creación de aplicaciones web utilizando ĺa arquitectura MVC.
+Framework sencillo para la creación de aplicaciones web utilizando la arquitectura MVC.
 
 ##Componentes
 
