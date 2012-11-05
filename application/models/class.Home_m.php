@@ -31,9 +31,6 @@ class Home_m {
 
 			);
 
-
-$db = Db::init('localhost', 'test', 'root', 'mysqlgerty');
-$db->prepare('SELECT * FROM posts');
 		return $data;
 
 	}//end get_test_data
