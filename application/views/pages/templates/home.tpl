@@ -1,5 +1,8 @@
 <h1>hola mundo</h1>
-<p>{$URL}</p>
-<p>{$UPL}</p>
-<p>{$CSS}</p>
-<p>{$JS}</p>
+
+<ul>
+	<li><b>URL:</b> {$URL}</li>
+	<li><b>UPL:</b> {$UPL}</li>
+	<li><b>CSS:</b> {$CSS}</li>
+	<li><b>JS:</b> {$JS}</li>
+</ul>

@@ -18,6 +18,8 @@
 					 $config['SITE']['dir_site'] . 'application/models/'      . PATH_SEPARATOR .
 		             $config['SITE']['dir_site'] . 'application/php/libs/');
 
+	ini_set('date.timezone', $config['SITE']['timezone']);
+
 	/**
 	 * Carga las librerías según se van necesitando
 	 *
