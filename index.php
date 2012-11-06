@@ -64,7 +64,7 @@ function load_libs ($class){
 
 }//end __autoload
 
-try{
+try {
 
 	require_once DIR_SITE . 'application/php/libs/smarty/Smarty.class.php';
 
@@ -76,7 +76,7 @@ try{
 	$app->set_lang($uri);
 	$app->load_controller($uri);
 
-}catch(K_error $e){
+} catch(K_error $e) {
 
 	$e->get_decorate_message();
 

@@ -23,25 +23,32 @@
 </head>
 
 <body>
-	<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+	<!--[if lt IE 7]>{$t.ancient_browser}<![endif]-->
 
 	<h1>Home</h1>
 
-	<p>Esta es la vista de la home.</p>
+	<p>{$t.this_is_home_view}</p>
 
-	<p><a href="{$URL}contacto">Ejemplo de página de contacto</a></p>
+	<p><a href="{$URL}contacto">{$t.sample_contact_page}</a></p>
 
-	<h2>Esta es la información cargada a través del modelo de la home:</h2>
+	<p>{$t.select_language} <a href="{$URL}lang/EN">{$t.english}</a> {$t.or} <a href="{$URL}lang/ES">{$t.spanish}</a></p>
 
-	<h2>Prueba a cargar algo por AJAX:</h2>
+	<h2>{$t.info_loaded_through_home_model}</h2>
 
-	<p><button type="button" name="btn-ajax" id="btn-ajax">Haz click aquí!</button></p>
+	{section name=item loop=$items}
+
+		<div><b>ID {$items[item].id}.</b> {$items[item].title}</div>
+
+	{/section}
+
+	<h2>{$t.ajax_test}</h2>
+
+	<p><button type="button" name="btn-ajax" id="btn-ajax">{$t.click_here}</button></p>
 
 	<div id="ajax-wrap">&nbsp;</div>
 
 	<script>
 
-		//Variable global a la que pasamos la URL del site para usarla en todos los js
 		var URL_SITE = "{$URL}";
 
 	</script>
@@ -82,12 +89,17 @@
 	<![endif]-->
 
   	<script>
-  		{literal}
-		    var _gaq=[['_setAccount',''],['_trackPageview']];
+
+  		var google_analytics_code = "{$google_analytics}";
+
+		{literal}
+
+			var _gaq=[['_setAccount', google_analytics_code],['_trackPageview']];
 		    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
 		    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 		    s.parentNode.insertBefore(g,s)}(document,'script'));
 	    {/literal}
+
   	</script>
 
 </body>

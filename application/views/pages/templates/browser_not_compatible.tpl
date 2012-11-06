@@ -22,7 +22,7 @@
 
   		{literal}
 
-			#ie-message {
+			#ie-message{
 				padding:30px;
 			}
 
@@ -97,13 +97,13 @@
 
   	<script>
 
-  		{literal}
+  		var google_analytics_code = "{$google_analytics}";
 
-		    var _gaq=[['_setAccount','<?php echo $cfg['google_analytics']; ?>'],['_trackPageview']];
+		{literal}
+			var _gaq=[['_setAccount', google_analytics_code],['_trackPageview']];
 		    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
 		    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 		    s.parentNode.insertBefore(g,s)}(document,'script'));
-
 	    {/literal}
 
   	</script>

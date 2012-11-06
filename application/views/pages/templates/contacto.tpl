@@ -26,35 +26,37 @@
 
 	<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
-	<h1>Contacto</h1>
+	<h1>{$t.contact}</h1>
 
-	<p>Ejemplo de formulario de contacto.</p>
+	<p><a href="{$URL}">{$t.back}</a></p>
+
+	<p>{$t.form_sample}</p>
 
 	<form id="contact-from" method="post" action="{$URL}contacto/send">
 
 		<fieldset>
 
-			<legend>Rellena el formulario</legend>
+			<legend>{$t.fill_form}</legend>
 
 			<ul>
 
 				<li>
 
-					<label>Nombre:</label>
+					<label>{$t.name}:</label>
 					<input type="text" name="name" id="name">
 
 				</li>
 
 				<li>
 
-					<label>Mensaje:</label>
+					<label>{$t.message}:</label>
 					<textarea name="msg" id="msg" rows="5" cols="10"></textarea>
 
 				</li>
 
 			</ul>
 
-			<p><input type="submit" name="btn-enviar" id="btn-enviar" value="Enviar"></p>
+			<p><input type="submit" name="btn-enviar" id="btn-enviar" value="{$t.send}"></p>
 
 		</fieldset>
 
@@ -64,10 +66,10 @@
 
 		{if isset($name)}
 
-			<h2>Información enviada mediante post:</h2>
+			<h2>{$t.info_sent}</h2>
 
-			<p><b>Nombre:</b> {$name}</p>
-			<p><b>Mensaje:</b></p>
+			<p><b>{$t.name}:</b> {$name}</p>
+			<p><b>{$t.message}:</b></p>
 			<p>{$msg|nl2br}</p>
 
 		{/if}
@@ -117,12 +119,17 @@
 	<![endif]-->
 
   	<script>
-  		{literal}
-		    var _gaq=[['_setAccount',''],['_trackPageview']];
+
+  		var google_analytics_code = "{$google_analytics}";
+
+		{literal}
+
+			var _gaq=[['_setAccount', google_analytics_code],['_trackPageview']];
 		    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
 		    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 		    s.parentNode.insertBefore(g,s)}(document,'script'));
 	    {/literal}
+
   	</script>
 
 </body>

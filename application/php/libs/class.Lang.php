@@ -1,9 +1,8 @@
 <?php
 /**
- * Class for lang management
+ * Lang management
  *
  */
-
 class Lang {
 
 	/**
@@ -15,15 +14,10 @@ class Lang {
 
 	private
 		/**
-	 	 * Languages acepted by the app
-	 	 * @var array
-	 	 */
-		$_accept_langs = array('ES', 'EN', 'PT'),
-		/**
 		 * Default loaded langugage
 		 * @var string
 		 */
-		$_default_lang = 'PT';
+		$_default_lang = null;
 
 	public
 		/**
@@ -32,18 +26,22 @@ class Lang {
 		 */
 		$lang = null,
 		/**
-		 * Strings traductions
+		 * Strings traductions returned by require lang file
 		 * @var array
 		 */
 		$t    = array();
+
 
 	/**
 	* Class constructor. Gets the language. Check if exists. Creates cookie.
 	* In case of desire language doesn't exists, it uses the default one.
 	*
+	* @param  string $default_language Default loaded langugage
 	* @param string $lang Desire language
 	*/
-	public function __construct ($lang = null) {
+	public function __construct ($default_language, $lang = null) {
+
+		$this->_default_lang = $default_language;
 
 		$lang = ($lang != null) ? strtoupper($lang) : (isset($_COOKIE['lang']) ? $_COOKIE['lang'] : null);
 
@@ -89,10 +87,12 @@ class Lang {
 
 		$browser_lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 
+		$this->lang = $browser_lang;
+/*
 		$this->lang = in_array($browser_lang, $this->_accept_langs)
 						? $browser_lang
 						: $this->_default_lang;
-
+*/
 	}//end _get_browser_lang
 
 
@@ -103,7 +103,9 @@ class Lang {
 
 		if ($this->lang != null) {
 
-			require self::DIR_LANGS . $this->lang . '.php';
+			$lang = file_exists(self::DIR_LANGS . $this->lang . '.php') ? $this->lang : $this->_default_lang;
+
+			require self::DIR_LANGS . $lang . '.php';
 
 			$this->t = $t;
 

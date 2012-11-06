@@ -67,6 +67,8 @@ class Application {
 
 		$this->smarty = new Smarty();
 
+		$this->smarty->assign('google_analytics', $config['SITE']['google_analytics']);
+
 		$this->_set_routes($config);
 
 	}//end __construct
@@ -98,13 +100,15 @@ class Application {
 
 		if ($uri['controller'] == 'lang') {
 
-			self::$lang = new Lang($uri['method']);
-			header('Location:' . $config['SITE']['url_site']);
+			$language_selected = $uri['method'];
+
+			self::$lang = new Lang(self::$config['SITE']['default_lang'], $language_selected);
+			header('Location:' . self::$config['SITE']['url_site']);
 			exit();
 
 		} else {
 
-			self::$lang = new Lang();
+			self::$lang = new Lang(self::$config['SITE']['default_lang']);
 			self::$lang->get_lang_file();
 
 			$this->smarty->assign('lang_code', self::$lang->lang);
