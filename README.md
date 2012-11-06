@@ -1,3 +1,6 @@
+Framework
+=========
+
 Simple framework that uses MVC. It uses [HTML5 Boilerplate](http://html5boilerplate.com/) as front-end template and [Smarty](http://smarty.net) as template engine. It is ready to support localization and is really easy to integrate your own solutions.
 
 ## Prerequisites
