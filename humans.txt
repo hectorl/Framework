@@ -4,6 +4,7 @@
 
 /* TEAM */
   Developer: Héctor Laura
+  Contact: hector.laura [at] fishbowl.es
   Site: http://fishbowl.es
   Twitter: @hectordelau
   Location: Burgos, Spain
