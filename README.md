@@ -21,4 +21,4 @@ The framework will try to search into the controller **videos** the method **loa
 
 ### Your app is in a subfolder
 
-If the URL of your app looks like `http://mydomain.com/my_app/`, you have to change the line `RewriteRule ^(.*)$ index.php/$1 [L]` to `RewriteRule ^(.*)$ my_app/index.php/$1 [L]` in the .htaccess and be sure that `AllowOverride` is set to `All` in order to make the rewrite rule work.
+If the URL of your app looks like `http://mydomain.com/my_app/`, you have to change the line `RewriteRule ^(.*)$ index.php/$1 [L]` to `RewriteRule ^(.*)$ my_app/index.php/$1 [L]` in the .htaccess. Then, be sure that `AllowOverride` is set to `All` in order to make the rewrite rule work.
