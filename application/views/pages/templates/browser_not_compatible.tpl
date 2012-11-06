@@ -16,7 +16,8 @@
   	<link type="text/plain" rel="author" href="{$URL}humans.txt" />
 
   	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300italic,400italic,700italic">
-  	<link rel="stylesheet" href="{$CSS}html5bp_reset.css">
+	<link rel="stylesheet" href="{$CSS}normalize.css">
+	<link rel="stylesheet" href="{$CSS}main.css">
 
   	<style>
 
@@ -89,11 +90,6 @@
 
 	<p><a href="http://browser-update.org/update.html" target="_blank">http://browser-update.org/update.html</a></p>
 
-
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="{$JS}libs/jquery-1.7.1.min.js"><\/script>')</script>
-
-	<script src="{$JS}plugins.js"></script>
 
   	<script>
 

@@ -25,6 +25,7 @@ $t = array (
 	'or' => 'or',
 	'english' => 'English',
 	'spanish' => 'Spanish',
-	'back' => 'Back'
+	'back' => 'Back',
+	'page_not_active' => 'Web not active.'
 
 );

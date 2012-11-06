@@ -1,5 +1,7 @@
 application/views/pages/templates_c/*
 application/views/pages/cache/*
-configs/*
+configs/config-dev.ini
+configs/config-loc.ini
+configs/config-prod.ini
 *.sublime-project
 *.sublime-workspace

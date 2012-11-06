@@ -15,10 +15,10 @@
   	<meta name="author" content="{$URL}humans.txt">
   	<link type="text/plain" rel="author" href="{$URL}humans.txt" />
 
-	<link rel="stylesheet" href="{$CSS}html5bp_reset.css">
-	<link rel="stylesheet" href="{$CSS}styles.css">
+	<link rel="stylesheet" href="{$CSS}normalize.css">
+	<link rel="stylesheet" href="{$CSS}main.css">
 
-	<script src="{$JS}libs/modernizr-2.5.3.min.js"></script>
+	<script src="{$JS}vendor/modernizr-2.5.3.min.js"></script>
 
 </head>
 
@@ -54,8 +54,8 @@
 	</script>
 
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="{$JS}libs/jquery-1.7.1.min.js"><\/script>')</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="{$JS}vendor/jquery-1.8.2.min.js"><\/script>')</script>
 
 	<script src="{$JS}plugins.js"></script>
 	<script src="{$JS}main.js"></script>

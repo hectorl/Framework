@@ -42,7 +42,7 @@
 
 		<h1>{$t.maintenance}</h1>
 		<div>
-			<p>La página no se encuentra activa.</p>
+			<p>{$t.page_not_active}</p>
 		</div>
 
 	</article>

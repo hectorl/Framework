@@ -25,6 +25,7 @@ $t = array (
 	'or' => 'o',
 	'english' => 'Inglés',
 	'spanish' => 'Español',
-	'back' => 'Volver'
+	'back' => 'Volver',
+	'page_not_active' => 'La página no se encuentra activa'
 
 );
