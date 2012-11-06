@@ -2,9 +2,7 @@
 
 header('Content-type: text/html; charset=utf-8');
 
-//incluimos los archivos de configuración
 $config = parse_ini_file('configs/config.ini', true);
-//$config = array_merge(parse_ini_file("configs/config-{$config['env']}.ini", true), $config);
 
 if($config['PROJECT']['show_errors']){
 
@@ -13,18 +11,18 @@ if($config['PROJECT']['show_errors']){
 
 }//fin if
 
+ini_set('date.timezone', $config['SITE']['timezone']);
 define('DIR_SITE', $config['SITE']['dir_site']);
 
-//Nos ahorramos el tener que controlar el flujo en la función __autoload
 set_include_path(DIR_SITE . 'application/' . PATH_SEPARATOR .
 	             DIR_SITE . 'application/php/libs/');
 
-ini_set('date.timezone', $config['SITE']['timezone']);
-
 /**
- * Carga las librerías según se van necesitando
+ * Custom autoloader.
  *
- * @param	string	$class		Nombre de la clase que se quiere cargar
+ * Check if the class has namespace and loads it
+ *
+ * @param	string	$class		Name of the class
  */
 function load_libs ($class){
 
@@ -45,7 +43,7 @@ function load_libs ($class){
 
 		$found = stream_resolve_include_path($dir . 'class.' . $class . '.php');
 
-		if($found !== false) {
+		if ($found !== false) {
 
 			require_once $dir . 'class.' . $class . '.php';
 
