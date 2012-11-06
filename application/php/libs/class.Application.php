@@ -202,7 +202,7 @@ class Application {
 
 		$browser = new Browser(array('msie' => array(6, 7)));
 
-		if (self::$config['maintenance']) {
+		if (self::$config['PROJECT']['maintenance']) {
 
 			$class = 'Maintenance';
 

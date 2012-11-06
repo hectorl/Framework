@@ -4,9 +4,9 @@ header('Content-type: text/html; charset=utf-8');
 
 //incluimos los archivos de configuración
 $config = parse_ini_file('configs/config.ini', true);
-$config = array_merge(parse_ini_file("configs/config-{$config['env']}.ini", true), $config);
+//$config = array_merge(parse_ini_file("configs/config-{$config['env']}.ini", true), $config);
 
-if($config['show_errors']){
+if($config['PROJECT']['show_errors']){
 
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
