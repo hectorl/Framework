@@ -109,7 +109,7 @@ class Application {
 		} else {
 
 			self::$lang = new Lang(self::$config['SITE']['default_lang']);
-			self::$lang->get_lang_file();
+			self::$lang->get_translations();
 
 			$this->smarty->assign('lang_code', self::$lang->lang);
 			$this->smarty->assign('t', self::$lang->t);

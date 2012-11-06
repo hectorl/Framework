@@ -99,7 +99,7 @@ class Lang {
 	/**
 	* Require the language file and save it contents insisde the "$t" attributte
 	*/
-	public function get_lang_file () {
+	public function get_translations () {
 
 		if ($this->lang != null) {
 
@@ -111,6 +111,6 @@ class Lang {
 
 		}//end if
 
-	}//end get_lang_file
+	}//end get_translations
 
 }//end Lang
