@@ -1,72 +1,51 @@
 <?php
 
-header('Content-type: text/html; charset=utf-8');
-
-$config = parse_ini_file('configs/config.ini', true);
-
-if($config['PROJECT']['show_errors']){
-
-	error_reporting(E_ALL);
-	ini_set('display_errors', '1');
-
-}//fin if
-
-ini_set('date.timezone', $config['SITE']['timezone']);
-define('DIR_SITE', $config['SITE']['dir_site']);
-
-set_include_path(DIR_SITE . 'application/' . PATH_SEPARATOR .
-	             DIR_SITE . 'application/php/libs/');
-
-/**
- * Custom autoloader.
- *
- * Check if the class has namespace and loads it
- *
- * @param	string	$class		Name of the class
- */
-function load_libs ($class){
-
-	try {
-
-		if (strpos($class, '\\')) {
-
-			$class_pieces = explode('\\', $class);
-			$dir = DIR_SITE . 'application/' . $class_pieces[0] . '/';
-			$class = $class_pieces[1];
-
-		} else {
-
-			$dir = '';
-			$class = $class;
-
-		}//end if
-
-		$found = stream_resolve_include_path($dir . 'class.' . $class . '.php');
-
-		if ($found !== false) {
-
-			require_once $dir . 'class.' . $class . '.php';
-
-		} else {
-
-			throw new K_error('Class <b>class.' . $class . '.php</b> does not exist.');
-
-		}//end else
-
-	} catch (K_error $e) {
-
-		echo $e->get_decorate_message();
-		die();
-
-	}//end catch
-
-}//end __autoload
-
 try {
 
-	require_once DIR_SITE . 'application/php/libs/smarty/Smarty.class.php';
+	header('Content-type: text/html; charset=utf-8');
 
-	spl_autoload_register('load_libs');
+	$config = parse_ini_file('configs/config.ini', true);
+
+	/**
+	 * We create the constants from configuration file.
+	 * We use the .ini section as prefix and each section variable as sufix. All uppercase
+	 *
+	 *
+	 * @example
+	 *  [SITE]
+	 *  name = 'http://mysite.com'
+	 *  -- the definition will be: define('SITE_NAME', 'http://mysite.com')
+	 *
+	 */
+	foreach ($config as $section => $var) {
+
+		foreach ($var as $key => $val) {
+			define(strtoupper($section . '_' . $key), $val);
+		}//end foreach
+
+	}//end foreach
+
+	ini_set('date.timezone', PROJECT_TIMEZONE);
+
+	if (PROJECT_SHOW_ERRORS) {
+
+		error_reporting(E_ALL);
+		ini_set('display_errors', '1');
+
+	}//fin if
+
+	if (PROJECT_SESSION) {
+		session_start();
+	}//fin if
+
+	require_once SITE_DIR . 'application/php/libs/smarty/Smarty.class.php';
+	require_once SITE_DIR . 'application/php/libs/class.Application.php';
+
+	set_include_path(SITE_DIR . 'application/' . PATH_SEPARATOR .
+	                 SITE_DIR . 'application/php/libs/');
+
+	//spl_autoload_register('load_libs');
+	spl_autoload_register('\Application::load_libs');
 
 	$app = Application::init($config);
 

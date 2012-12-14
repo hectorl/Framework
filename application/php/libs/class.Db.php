@@ -3,7 +3,8 @@
  * Singleton to create an instance of PDO
  */
 
-class Db extends Application{
+class Db
+{
 
 	/**
 	 * Instance of the DB class
@@ -54,10 +55,10 @@ class Db extends Application{
 
 		if (!(self::$_instance instanceof self)) {
 
-			$host   = (!$host)   ? parent::$config['DB']['db_host'] : $host;
-			$dbname = (!$dbname) ? parent::$config['DB']['db_name'] : $dbname;
-			$user   = (!$user)   ? parent::$config['DB']['db_user'] : $user;
-			$pass   = (!$pass)   ? parent::$config['DB']['db_pass'] : $pass;
+			$host   = (!$host)   ? DB_HOST : $host;
+			$dbname = (!$dbname) ? DB_NAME : $dbname;
+			$user   = (!$user)   ? DB_USER : $user;
+			$pass   = (!$pass)   ? DB_PASS : $pass;
 
 			self::$_instance = new self ($host, $dbname, $user, $pass);
 

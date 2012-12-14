@@ -1,10 +1,9 @@
 <?php
 
-class K_error extends Exception{
-
-
+class K_error extends Exception
+{
     /**
-     * Redefine the exception so message isn't optional
+     * Redeende the exception so message isn't optional
      */
     public function __construct($message, $code = 0, Exception $previous = null) {
         // some code
@@ -12,7 +11,7 @@ class K_error extends Exception{
         // make sure everything is assigned properly
         parent::__construct($message, $code, $previous);
 
-    }//fin __construct
+    }//end __construct
 
 
     /**
@@ -22,7 +21,7 @@ class K_error extends Exception{
 
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
 
-    }//fin __toString
+    }//end __toString
 
 
     public function get_decorate_message(){
@@ -35,7 +34,7 @@ class K_error extends Exception{
 
         echo $msg;
 
-    }//fin get_decorate_message
+    }//end get_decorate_message
 
 
     /**
@@ -52,9 +51,9 @@ class K_error extends Exception{
             case 1: return 'warning';
             default: return '';
 
-        }//fin switch
+        }//end switch
 
-    }//fin get_style_code
+    }//end get_style_code
 
 
     /**
@@ -66,4 +65,4 @@ class K_error extends Exception{
 
     }//customFunction
 
-}//fin K_error
+}//end K_error

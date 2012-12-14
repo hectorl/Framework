@@ -44,11 +44,6 @@ class Application {
      */
 	static protected $instance;
 	/**
-	 * Page prefix:
-	 *  - site  -> front end [default]
-	 */
-	static protected $prefix = 'site';
-	/**
 	 * Lang used by the user: code and string
 	 *
 	 * @var Lang
@@ -66,10 +61,13 @@ class Application {
 	private function __construct ($config) {
 
 		$this->smarty = new Smarty();
+		$this->smarty->assign('google_analytics', SITE_GOOGLE_ANALYTICS);
 
-		$this->smarty->assign('google_analytics', $config['SITE']['google_analytics']);
+		self::$controllers = SITE_DIR . 'application/controllers/';
+		self::$models      = SITE_DIR . 'application/models/';
+		self::$views       = SITE_DIR . 'application/views/';
 
-		$this->_set_routes($config);
+		$this->_set_smarty_routes();
 
 	}//end __construct
 
@@ -93,6 +91,53 @@ class Application {
 	}//end init
 
 
+
+	/**
+	 * Custom autoloader.
+	 *
+	 * Check if the class has namespace and loads it
+	 *
+	 * @param	string	$class		Name of the class
+	 */
+	static public function load_libs ($class) {
+
+		try {
+
+			if (strpos($class, '\\')) {
+
+				$class_pieces = explode('\\', $class);
+				$dir = SITE_DIR . 'application/' . $class_pieces[0] . '/';
+				$class = $class_pieces[1];
+
+			} else {
+
+				$dir = '';
+				$class = $class;
+
+			}//end if
+
+			$found = stream_resolve_include_path($dir . 'class.' . $class . '.php');
+
+			if ($found !== false) {
+
+				require_once $dir . 'class.' . $class . '.php';
+
+			} else {
+
+				throw new K_error('Class <b>class.' . $class . '.php</b> does not exist.');
+
+			}//end else
+
+		} catch (K_error $e) {
+
+			echo $e->get_decorate_message();
+			die();
+
+		}//end catch
+
+	}//end load_libs
+
+
 	/**
 	 *
 	 */
@@ -102,13 +147,13 @@ class Application {
 
 			$language_selected = $uri['method'];
 
-			self::$lang = new Lang(self::$config['SITE']['default_lang'], $language_selected);
-			header('Location:' . self::$config['SITE']['url_site']);
+			self::$lang = new Lang(SITE_DEFAULT_LANG, $language_selected);
+			header('Location:' . SITE_URL);
 			exit();
 
 		} else {
 
-			self::$lang = new Lang(self::$config['SITE']['default_lang']);
+			self::$lang = new Lang(SITE_DEFAULT_LANG);
 			self::$lang->get_translations();
 
 			$this->smarty->assign('lang_code', self::$lang->lang);
@@ -127,7 +172,7 @@ class Application {
 
 		$uri = array('controller' => self::DEFAULT_VIEW, 'method' => '', 'var' => '');
 
-		$url = str_replace(self::$config['SITE']['path'], '', strtolower($url));
+		$url = str_replace(SITE_PATH, '', strtolower($url));
 
 		$array_tmp_uri = preg_split('[\\/]', $url, -1, PREG_SPLIT_NO_EMPTY);
 
@@ -141,17 +186,13 @@ class Application {
 				if (strpos($array_tmp_uri[2], '?') !== false) {
 
 					foreach ($_REQUEST as $key => $val) {
-
 						$uri['var'][strtolower($key)] = $val;
-
 					}//end foreach
 
 					$uri['method'] = (isset($array_tmp_uri[1])) ? strtolower($array_tmp_uri[1]) : '';
 
 				} else {
-
 					$uri['var'][$array_tmp_uri[1]] = $array_tmp_uri[2];
-
 				}//end else
 
 			} else {
@@ -161,9 +202,7 @@ class Application {
 				if (sizeof($array_tmp_uri) > 3) {
 
 					for ($k = 2, $len = sizeof($array_tmp_uri) - 2; $k <= $len; $k += 2) {
-
 						$uri['var'][$array_tmp_uri[$k]] = $array_tmp_uri[$k + 1];
-
 					}//end for
 
 				}//end if
@@ -201,10 +240,8 @@ class Application {
 
 		$browser = new Browser(array('msie' => array(6, 7)));
 
-		if (self::$config['PROJECT']['maintenance']) {
-
+		if (PROJECT_MAINTENANCE) {
 			$class = 'Maintenance';
-
 		} elseif (!$browser->supported()) {
 
 			$data = array(
@@ -230,16 +267,10 @@ class Application {
 
 		$controller = new $namespaced_controller($this->smarty);
 
-		//$controller = new $class($this->smarty);
-
 		if (method_exists($controller, $uri['method'])) {
-
 			$controller->{$uri['method']}($uri['var']);
-
 		} else {
-
 			$controller->index($uri['var']);
-
 		}//end else
 
 	}//end load_controller
@@ -253,7 +284,6 @@ class Application {
 	function load_model($model) {
 
 		$namespaced_model = "\models\\" . $model;
-
 		$this->$model = new $namespaced_model;
 
 	}//end load_model
@@ -264,28 +294,19 @@ class Application {
 	 *
 	 * @param array $config Configuration from .ini files
 	 */
-	public function _set_routes ($config) {
+	public function _set_smarty_routes () {
 
-		self::$config = $config;
+		$this->smarty->assign('URL', SITE_URL);
+		$this->smarty->assign('IMG', SITE_URL . 'application/views/img/');
+		$this->smarty->assign('CSS', SITE_URL . 'application/views/css/');
+		$this->smarty->assign('JS',  SITE_URL . 'application/views/js/');
+		$this->smarty->assign('UPL', SITE_URL . 'uploads/');
 
-		$dir = self::$config['SITE']['dir_site'];
-		$url = self::$config['SITE']['url_site'];
+		$this->smarty->setTemplateDir(SITE_DIR . 'application/views/pages/templates/');
+		$this->smarty->setCompileDir(SITE_DIR . 'application/views/pages/templates_c/');
+		$this->smarty->setConfigDir(SITE_DIR . 'application/views/pages/configs/');
+		$this->smarty->setCacheDir(SITE_DIR . 'application/views/pages/cache/');
 
-		self::$controllers = $dir . 'application/controllers/';
-		self::$models      = $dir . 'application/models/';
-		self::$views       = $dir . 'application/views/';
-
-		$this->smarty->assign('URL', $url);
-		$this->smarty->assign('IMG', $url . 'application/views/img/');
-		$this->smarty->assign('CSS', $url . 'application/views/css/');
-		$this->smarty->assign('JS',  $url . 'application/views/js/');
-		$this->smarty->assign('UPL', $url . 'uploads/');
-
-		$this->smarty->setTemplateDir($dir . 'application/views/pages/templates/');
-		$this->smarty->setCompileDir($dir . 'application/views/pages/templates_c/');
-		$this->smarty->setConfigDir($dir . 'application/views/pages/configs/');
-		$this->smarty->setCacheDir($dir . 'application/views/pages/cache/');
-
-	}//end _set_routes
+	}//end _set_smarty_routes
 
 }//end Application
