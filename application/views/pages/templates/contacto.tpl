@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="{$CSS}normalize.css">
 	<link rel="stylesheet" href="{$CSS}main.css">
 
-	<script src="{$JS}libs/modernizr-2.5.3.min.js"></script>
+	<script src="{$JS}libs/modernizr-2.6.2.min.js"></script>
 
 </head>
 

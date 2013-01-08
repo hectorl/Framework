@@ -3,7 +3,6 @@
  * Core app class
  *
  */
-
 class Application {
 
 	/**
@@ -13,6 +12,8 @@ class Application {
 	const VAR_PREFIX  = 'get';
 
 	const DEFAULT_VIEW = 'Home';
+
+	const TRANSLATIONS_TYPE = 'file';		//file|db
 	/**
 	 * Parts from URL used in the core app
 	 * @var array
@@ -154,7 +155,7 @@ class Application {
 		} else {
 
 			self::$lang = new Lang(SITE_DEFAULT_LANG);
-			self::$lang->get_translations();
+			self::$lang->get_translations(self::TRANSLATIONS_TYPE);
 
 			$this->smarty->assign('lang_code', self::$lang->lang);
 			$this->smarty->assign('t', self::$lang->t);

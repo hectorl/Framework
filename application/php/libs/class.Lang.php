@@ -98,19 +98,74 @@ class Lang {
 
 	/**
 	* Require the language file and save it contents insisde the "$t" attributte
+	*
+	* @param string $type Type of solution to get the translations
 	*/
-	public function get_translations () {
+	public function get_translations ($type = 'file') {
 
 		if ($this->lang != null) {
 
-			$lang = file_exists(self::DIR_LANGS . $this->lang . '.php') ? $this->lang : $this->_default_lang;
+			if ($type == 'file') {
 
-			require self::DIR_LANGS . $lang . '.php';
+				$this->t = $this->_get_translations_from_file();
 
-			$this->t = $t;
+			} elseif ($type == 'db') {
+
+				$this->t = $this->_get_translations_from_db();
+
+			}//end elsefi
 
 		}//end if
 
 	}//end get_translations
+
+
+	/**
+	 * Get the translations inside the file
+	 *
+	 * @return array Translations info
+	 */
+	private function _get_translations_from_file () {
+
+		$lang = file_exists(self::DIR_LANGS . $this->lang . '.php')
+					? $this->lang : $this->_default_lang;
+
+		require self::DIR_LANGS . $lang . '.php';
+
+		return $t;
+
+	}//end _get_translations_from_file
+
+
+	/**
+	 * Get the translations inside the database
+	 *
+	 * @return array Translations info
+	 */
+	private function _get_translations_from_db () {
+
+		try {
+
+			$db = Db::init();
+
+			$sql = 'SELECT key_word, value
+					FROM arka_web.language
+					WHERE lang = :lang';
+
+			$sth = $db->dbh->prepare($sql);
+
+			$sth->execute(array(':lang' => $this->lang));
+
+			$t =  $sth->fetchAll(PDO::FETCH_COLUMN|PDO::FETCH_GROUP);
+
+			return array_map('reset', $t );
+
+		} catch (\PDOException $e) {
+
+			echo '<b>Error [' . $e->getLine() . ']: </b>' . $e->getMessage();
+
+		}//end catch
+
+	}//end _get_translations_from_db
 
 }//end Lang
