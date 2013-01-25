@@ -11,7 +11,7 @@ class Application {
 	 */
 	const VAR_PREFIX  = 'get';
 
-	const DEFAULT_VIEW = 'Home';
+	const DEFAULT_CONTROLLER = 'Home';
 
 	const TRANSLATIONS_TYPE = 'file';		//file|db
 	/**
@@ -171,7 +171,7 @@ class Application {
 	 */
 	public function explode_url ($url) {
 
-		$uri = array('controller' => self::DEFAULT_VIEW, 'method' => '', 'var' => '');
+		$uri = array('controller' => self::DEFAULT_CONTROLLER, 'method' => '', 'var' => '');
 
 		$url = str_replace(SITE_PATH, '', strtolower($url));
 
