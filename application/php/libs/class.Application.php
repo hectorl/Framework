@@ -114,6 +114,9 @@ class Application {
 			if (strpos($class, '\\')) {
 
 				$class_pieces = explode('\\', $class);
+				$class_pieces = array_filter($class_pieces, 'strlen');
+				$class_pieces = array_values($class_pieces);
+
 				$dir = SITE_DIR . 'application/' . $class_pieces[0] . '/';
 				$class = $class_pieces[1];
 
