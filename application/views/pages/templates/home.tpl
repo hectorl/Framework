@@ -25,7 +25,7 @@
 <body>
 	<!--[if lt IE 7]>{$t.ancient_browser}<![endif]-->
 
-	<h1>Home</h1>
+	<h1>Home tpl</h1>
 
 	<p>{$t.this_is_home_view}</p>
 

@@ -33,15 +33,25 @@ class Home extends Application
 	 */
 	public function index () {
 
-		$this->smarty->caching = false;
+		if (PROJECT_SMARTY) {
 
-		if (!$this->smarty->isCached('home.tpl', parent::$lang->lang)) {
+			$this->smarty->caching = false;
 
-			$this->smarty->assign('items', $this->Home->get_test_data());
+			if (!$this->smarty->isCached('home.tpl', parent::$lang->lang)) {
 
-		}//end if
+				$this->smarty->assign('items', $this->Home->get_test_data());
 
-		$this->smarty->display('home.tpl', parent::$lang->lang);
+			}//end if
+
+			$this->smarty->display('home.tpl', parent::$lang->lang);
+
+		} else {
+
+			$items = $this->Home->get_test_data();
+
+			$this->load_view('home', array('items' => $items));
+
+		}//end else
 
 	}//end index
 

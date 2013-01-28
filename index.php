@@ -32,13 +32,16 @@ try {
 		error_reporting(E_ALL);
 		ini_set('display_errors', '1');
 
-	}//fin if
+	}//end if
 
 	if (PROJECT_SESSION) {
 		session_start();
-	}//fin if
+	}//end if
 
-	require_once SITE_DIR . 'application/php/libs/smarty/Smarty.class.php';
+	if (PROJECT_SMARTY) {
+		require_once SITE_DIR . 'application/php/libs/smarty/Smarty.class.php';
+	}//end if
+
 	require_once SITE_DIR . 'application/php/libs/class.Application.php';
 
 	set_include_path(SITE_DIR . 'application/' . PATH_SEPARATOR .

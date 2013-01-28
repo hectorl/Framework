@@ -14,6 +14,9 @@ class Application {
 	const DEFAULT_CONTROLLER = 'Home';
 
 	const TRANSLATIONS_TYPE = 'file';		//file|db
+	const TPL_PREFIX = '';				//phtml|php
+	const TPL_SUFIX = 'phtml';				//phtml|php
+
 	/**
 	 * Parts from URL used in the core app
 	 * @var array
@@ -61,14 +64,18 @@ class Application {
 	 */
 	private function __construct ($config) {
 
-		$this->smarty = new Smarty();
-		$this->smarty->assign('google_analytics', SITE_GOOGLE_ANALYTICS);
-
 		self::$controllers = SITE_DIR . 'application/controllers/';
 		self::$models      = SITE_DIR . 'application/models/';
 		self::$views       = SITE_DIR . 'application/views/';
 
-		$this->_set_smarty_routes();
+		if (PROJECT_SMARTY) {
+
+			$this->smarty = new Smarty();
+			$this->smarty->assign('google_analytics', SITE_GOOGLE_ANALYTICS);
+
+		}//end if
+
+		$this->_set_routes();
 
 	}//end __construct
 
@@ -120,13 +127,9 @@ class Application {
 			$found = stream_resolve_include_path($dir . 'class.' . $class . '.php');
 
 			if ($found !== false) {
-
 				require_once $dir . 'class.' . $class . '.php';
-
 			} else {
-
 				throw new K_error('Class <b>class.' . $class . '.php</b> does not exist.');
-
 			}//end else
 
 		} catch (K_error $e) {
@@ -157,8 +160,14 @@ class Application {
 			self::$lang = new Lang(SITE_DEFAULT_LANG);
 			self::$lang->get_translations(self::TRANSLATIONS_TYPE);
 
-			$this->smarty->assign('lang_code', self::$lang->lang);
-			$this->smarty->assign('t', self::$lang->t);
+			if (PROJECT_SMARTY) {
+
+				$this->smarty->assign('lang_code', self::$lang->lang);
+				$this->smarty->assign('t', self::$lang->t);
+
+			} else {
+				define('LANG_CODE', self::$lang->lang);
+			}//end if
 
 		}//end else
 
@@ -291,23 +300,58 @@ class Application {
 
 
 	/**
+	 * Gets vars from array, the lang information and loads the view
+	 *
+	 * @param string $view Name of view
+	 * @param array $vars All variables used in the view
+	 */
+	function load_view ($view, $vars = null) {
+
+		if (is_array($vars) && sizeof($vars) > 0) {
+			extract($vars, EXTR_PREFIX_SAME, self::VAR_PREFIX);
+		}//end if
+
+		$t = self::$lang->t;
+
+		require_once TPL . self::TPL_PREFIX . $view . '.' . self::TPL_SUFIX;
+
+	}//end load_view
+
+
+	/**
 	 * Set all project routes
 	 *
 	 * @param array $config Configuration from .ini files
 	 */
-	public function _set_smarty_routes () {
+	public function _set_routes () {
 
-		$this->smarty->assign('URL', SITE_URL);
-		$this->smarty->assign('IMG', SITE_URL . 'application/views/img/');
-		$this->smarty->assign('CSS', SITE_URL . 'application/views/css/');
-		$this->smarty->assign('JS',  SITE_URL . 'application/views/js/');
-		$this->smarty->assign('UPL', SITE_URL . 'uploads/');
+		if (PROJECT_SMARTY) {
 
-		$this->smarty->setTemplateDir(SITE_DIR . 'application/views/pages/templates/');
-		$this->smarty->setCompileDir(SITE_DIR . 'application/views/pages/templates_c/');
-		$this->smarty->setConfigDir(SITE_DIR . 'application/views/pages/configs/');
-		$this->smarty->setCacheDir(SITE_DIR . 'application/views/pages/cache/');
+			$this->smarty->assign('URL', SITE_URL);
+			$this->smarty->assign('IMG', SITE_URL . 'application/views/img/');
+			$this->smarty->assign('CSS', SITE_URL . 'application/views/css/');
+			$this->smarty->assign('JS',  SITE_URL . 'application/views/js/');
+			$this->smarty->assign('UPL', SITE_URL . 'uploads/');
+
+			$this->smarty->setTemplateDir(SITE_DIR . 'application/views/pages/templates/');
+			$this->smarty->setCompileDir(SITE_DIR . 'application/views/pages/templates_c/');
+			$this->smarty->setConfigDir(SITE_DIR . 'application/views/pages/configs/');
+			$this->smarty->setCacheDir(SITE_DIR . 'application/views/pages/cache/');
+
+		} else {
+
+			define('IMG',   SITE_URL . 'application/views/img/');
+			define('CSS',   SITE_URL . 'application/views/css/');
+			define('JS',    SITE_URL . 'application/views/js/');
+			define('UPL',   SITE_URL . 'uploads/');
+			define('TPL',   SITE_DIR . 'application/views/pages/templates/');
+			define('TPL_C', SITE_DIR . 'application/views/pages/cache/');
+
+		}//end else
 
 	}//end _set_smarty_routes
+
+
+
 
 }//end Application
