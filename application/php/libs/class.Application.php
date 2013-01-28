@@ -111,7 +111,7 @@ class Application {
 
 		try {
 
-			if (strpos($class, '\\')) {
+			if (strpos($class, '\\') !== 0) {
 
 				$class_pieces = explode('\\', $class);
 				$class_pieces = array_filter($class_pieces, 'strlen');
