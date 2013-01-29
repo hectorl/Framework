@@ -111,7 +111,7 @@ class Application {
 
 		try {
 
-			if (strpos($class, '\\') !== 0) {
+			if (strpos($class, '\\') !== false) {
 
 				$class_pieces = explode('\\', $class);
 				$class_pieces = array_filter($class_pieces, 'strlen');
@@ -232,7 +232,7 @@ class Application {
     /**
      * Prevent cloning of the object: issues an E_USER_ERROR if this is attempted
      */
-    public function __clone() {
+    public function __clone () {
 
         trigger_error( 'Cloning the registry is not permitted', E_USER_ERROR );
 
@@ -242,29 +242,16 @@ class Application {
 	/**
 	 * Load the controller.
 	 * Check if the project is in maintenance status.
-	 * Check if the browser is Internet Explorer 6 or 7
 	 * Then, load the controller that we want.
 	 *
 	 * @param array $uri Array of the exploding URL
 	 */
-	function load_controller($uri) {
+	function load_controller ($uri) {
 
 		$class = ucfirst($uri['controller']);
 
-		$browser = new Browser(array('msie' => array(6, 7)));
-
 		if (PROJECT_MAINTENANCE) {
 			$class = 'Maintenance';
-		} elseif (!$browser->supported()) {
-
-			$data = array(
-						'browser' => $browser->Version,
-						'os'      => $browser->OS
-					);
-
-			$class = 'Browser_not_compatible';
-			$uri['var'] = $data;
-
 		} else {
 
 			if (!file_exists(self::$controllers . 'class.' . $class . '.php')) {
@@ -274,7 +261,7 @@ class Application {
 
 			}//end if
 
-		}//end elseNo
+		}//end else
 
 		$namespaced_controller = "\controllers\\" . $class;
 
@@ -353,8 +340,5 @@ class Application {
 		}//end else
 
 	}//end _set_smarty_routes
-
-
-
 
 }//end Application

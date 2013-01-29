@@ -18,12 +18,19 @@
 	<link rel="stylesheet" href="{$CSS}normalize.css">
 	<link rel="stylesheet" href="{$CSS}main.css">
 
+	<!--[if lt IE 9]>
+
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+		<script src="<?php echo JS; ?>libs/innershiv.js" type="text/javascript"></script>
+
+	<![endif]-->
+
 	<script src="{$JS}vendor/modernizr-2.6.2.min.js"></script>
 
 </head>
 
 <body>
-	<!--[if lt IE 7]>{$t.ancient_browser}<![endif]-->
+	<!--[if lt IE 8]>{$t.ancient_browser}<![endif]-->
 
 	<h1>Home tpl</h1>
 
