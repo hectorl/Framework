@@ -2,7 +2,7 @@
 /**
  * Static class to use HELPERS. User: HELPER::[name_of_helper([param1, param2, ...])]
  */
-class HELPER extends APPLICATION {
+class Helper extends Application {
 
 	/**
 	 * Folder to keep all the helpers
@@ -37,13 +37,9 @@ class HELPER extends APPLICATION {
 
  			if (!isset(self::$funcs[$method])) {
 
-	 			if (file_exists(parent::$config['SITE']['dir_site'] .
-	 			   'application/php/' .
-	 			   self::HELPERS_FOLDER .
-	 			   $method . '.php')
-	 			){
+	 			if (file_exists(SITE_DIR . 'application/php/' . self::HELPERS_FOLDER . $method . '.php')) {
 
-	 				require parent::$config['SITE']['dir_site'] .
+	 				require SITE_DIR .
 	 						'application/php/' .
 	 						self::HELPERS_FOLDER .
 	 						$method . '.php';
