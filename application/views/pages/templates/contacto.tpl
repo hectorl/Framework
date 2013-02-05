@@ -10,7 +10,7 @@
 
 	<title>Framework template</title>
 
-	<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width" />
   	<meta name="description" content="">
   	<meta name="author" content="{$URL}humans.txt">
   	<link type="text/plain" rel="author" href="{$URL}humans.txt" />
@@ -90,9 +90,8 @@
 
 	</script>
 
-
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="{$JS}vendor/jquery-1.8.2.min.js"><\/script>')</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
 
 	<script src="{$JS}plugins.js"></script>
 	<script src="{$JS}main.js"></script>
