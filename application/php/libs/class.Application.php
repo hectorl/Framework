@@ -185,7 +185,8 @@ class Application {
 
 		$uri = array('controller' => self::DEFAULT_CONTROLLER, 'method' => '', 'var' => '');
 
-		$url = str_replace(SITE_PATH, '', $url);
+		$path = str_replace("/", "\\/", SITE_PATH);
+		$url = preg_replace('/\/' . $path .'/', '', $url, 1);
 
 		$array_tmp_uri = preg_split('[\\/]', $url, -1, PREG_SPLIT_NO_EMPTY);
 
