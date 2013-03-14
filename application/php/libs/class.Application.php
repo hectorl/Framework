@@ -194,6 +194,17 @@ class Application {
 
 			$uri['controller'] = $array_tmp_uri[0];
 
+			$uri['method'] = (isset($array_tmp_uri[1])) ? $array_tmp_uri[1] : '';
+
+			if (sizeof($array_tmp_uri) > 3) {
+
+				for ($k = 2, $len = sizeof($array_tmp_uri) - 2; $k <= $len; $k += 2) {
+					$uri['var'][$array_tmp_uri[$k]] = $array_tmp_uri[$k + 1];
+				}//end for
+
+			}//end if
+
+/*
 			if (sizeof($array_tmp_uri) == 3) {
 
 				//Check URL GET params. Usefull for AJAX calls
@@ -222,7 +233,7 @@ class Application {
 				}//end if
 
 			}//end else
-
+*/
 		}//end if
 
 		return $uri;

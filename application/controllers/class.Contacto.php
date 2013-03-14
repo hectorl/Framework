@@ -22,8 +22,8 @@ class Contacto extends Application
 	}//end __construct
 
 
-	public function index () {
-
+	public function index ($params) {
+var_dump($params);
 		$this->smarty->caching = false;
 
 		$this->smarty->display('contacto.tpl', parent::$lang->lang);
