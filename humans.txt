@@ -3,13 +3,12 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
-
-# THANKS
-
-    <name>
+	Carlos Pascual - Developer
+	Héctor Laura - Developer
+	Ricardo Palacios - Project Manager
 
 # TECHNOLOGY COLOPHON
 
-    HTML5, CSS3
-    Normalize.css, jQuery, Modernizr
+    HTML5, CSS3, MySQL, PHP, Javascript
+    Normalize.css, jQuery, Modernizr, Twitter Bootstrap, GIMP, Filezilla, MySQL Workbench, Google Chrome
+    Core admin theme

@@ -1,97 +1,103 @@
 <?php
-/**
- * Singleton to create an instance of PDO
- */
 
 class Db
 {
 
-	/**
-	 * Instance of the DB class
-	 *
-	 * @var Db
-	 */
-	private static $_instance = null;
+	private static
+		$_current_connection,
+		$_dbh = array(),
+		$_instance,
+		$_connections = array();
 
 
-	/**
-	 * Connects to mysql useing utf-8 and setting names
-	 *
-	 * @param string $host   Database host
-	 * @param string $dbname Database name
-	 * @param string $user   Database user
-	 * @param string $pass   Database pass
-	 */
-	public function __construct ($host, $dbname, $user, $pass) {
+	public static function init ($conn) {
 
-		try {
+		if (!self::$_dbh[$conn] instanceof PDO) {
 
-			$this->dbh = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$db_host = self::$_connections[$conn]['db_host'];
+			$db_name = self::$_connections[$conn]['db_name'];
+			$db_user = self::$_connections[$conn]['db_user'];
+			$db_pass = self::$_connections[$conn]['db_pass'];
 
-		} catch(PDOException $e) {
+			try {
 
-			echo $e->getMessage();
+				self::$_dbh[$conn] = new PDO(
+					"mysql:host={$db_host};dbname={$db_name};charset=utf8",
+					$db_user,
+					$db_pass,
+					array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+				);
 
-		}//end catch
+			} catch (PDOException $e) {
 
-	}//end __construct
+				die($e->getError());
 
+			}//end catch
 
-	/**
-	 * Check if exists a conexion
-	 * If not, it initialize data conexion from DB using the .ini config or parameters
-	 * and creates an instance.
-	 * If conexion exists, it returns the instance
-	 *
-	 * @param string $host   Database host
-	 * @param string $dbname Database name
-	 * @param string $user   Database user
-	 * @param string $pass   Database pass
-	 *
-	 * @return object Class instance
-	 */
-	public static function init ($host = false, $dbname = false, $user = false, $pass = false) {
+			self::$_dbh[$conn]->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		if (!(self::$_instance instanceof self)) {
+		}//end if
 
-			$host   = (!$host)   ? DB_HOST : $host;
-			$dbname = (!$dbname) ? DB_NAME : $dbname;
-			$user   = (!$user)   ? DB_USER : $user;
-			$pass   = (!$pass)   ? DB_PASS : $pass;
-
-			self::$_instance = new self ($host, $dbname, $user, $pass);
-
-	    }//end if
-
-		return self::$_instance;
+		return self::$_dbh[$conn];
 
 	}//end init
 
 
-	public function prepare ($sql) {
+	public function register ($conn) {
 
-		return $this->dbh->prepare($sql);
+		if (!self::$_instance)
+            self::$_instance = new Db();
 
-	}
+        self::$_current_connection = $conn;
 
+		self::$_connections[self::$_current_connection] = array();;
 
+		return self::$_instance;
 
-	public function __call ($name, $arguments) {
-
-echo "Calling object method '$name' "
-             . implode(', ', $arguments). "\n";
-
-	}
+	}//end register
 
 
-    /**
-     * Prevent cloning of the object: issues an E_USER_ERROR if this is attempted
-     */
-    public function __clone() {
+	public function db_host ($host) {
 
-        trigger_error( 'Cloning the registry is not permitted', E_USER_ERROR );
+		self::$_connections[self::$_current_connection]['db_host'] = $host;
 
-    }//end __clone
+		return self::$_instance;
 
-}//end DB
+	}//end db_host
+
+	public function db_name ($db_name) {
+
+		self::$_connections[self::$_current_connection]['db_name'] = $db_name;
+
+		return self::$_instance;
+
+	}//end db_name
+
+
+	public function db_user ($db_user) {
+
+		self::$_connections[self::$_current_connection]['db_user'] = $db_user;
+
+		return self::$_instance;
+
+	}//end db_user
+
+
+	public function db_pass ($db_pass) {
+
+		self::$_connections[self::$_current_connection]['db_pass'] = $db_pass;
+
+		return self::$_instance;
+
+	}//end db_pass
+
+
+	public function get_register ($conn) {
+
+		echo '<pre>';
+		var_dump(self::$_connections[$conn]);
+		echo '</pre>';
+
+	}//end get_register
+
+}//end Db

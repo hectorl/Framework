@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>	  <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>		 <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>		 <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+		<link rel="stylesheet" href="<?php echo CSS; ?>normalize.css">
+		<link rel="stylesheet" href="<?php echo CSS; ?>main.css">
+		<script src="<?php echo JS; ?>vendor/modernizr-2.6.2.min.js"></script>
+
+	</head>
+	<body>
+
+		<!-- CONTENT -->
+
+
+
+
+
+		<!-- SCRIPTS -->
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="<?php echo JS; ?>vendor/jquery-1.10.2.min.js"><\/script>')</script>
+		<script src="<?php echo JS; ?>plugins.js"></script>
+		<script src="<?php echo JS; ?>main.js"></script>
+
+		<?php if (SITE_GOOGLE_ANALYTICS) : ?>
+
+			<script>
+
+				var _gaq=[['_setAccount',' <?php echo SITE_GOOGLE_ANALYTICS; ?>'],['_trackPageview']];
+				(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+				g.src='//www.google-analytics.com/ga.js';
+				s.parentNode.insertBefore(g,s)}(document,'script'));
+
+			</script>
+
+		<?php endif; ?>
+
+	</body>
+
+</html>

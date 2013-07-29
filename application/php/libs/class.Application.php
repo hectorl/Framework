@@ -11,7 +11,7 @@ class Application {
 	 */
 	const VAR_PREFIX  = 'get';
 
-	const DEFAULT_CONTROLLER = 'Home';
+	const DEFAULT_CONTROLLER = 'Demo';
 
 	const TRANSLATIONS_TYPE = 'file';		//file|db
 	const TPL_PREFIX = '';				//phtml|php
@@ -111,7 +111,9 @@ class Application {
 
 		try {
 
-			if (strpos($class, '\\') !== false) {
+			$dir = '';
+
+			if (strpos($class, 'models\\') !== false || strpos($class, 'controllers\\') !== false) {
 
 				$class_pieces = explode('\\', $class);
 				$class_pieces = array_filter($class_pieces, 'strlen');
@@ -120,19 +122,14 @@ class Application {
 				$dir = SITE_DIR . 'application/' . $class_pieces[0] . '/';
 				$class = $class_pieces[1];
 
-			} else {
-
-				$dir = '';
-				$class = $class;
-
 			}//end if
 
-			$found = stream_resolve_include_path($dir . 'class.' . $class . '.php');
+			$found = stream_resolve_include_path("{$dir}class.{$class}.php");
 
 			if ($found !== false) {
-				require_once $dir . 'class.' . $class . '.php';
+				require_once "{$dir}class.{$class}.php";
 			} else {
-				throw new K_error('Class <b>class.' . $class . '.php</b> does not exist.');
+				throw new K_error("Class <b>class.{$class}.php</b> does not exist.");
 			}//end else
 
 		} catch (K_error $e) {
@@ -185,42 +182,16 @@ class Application {
 
 		$uri = array('controller' => self::DEFAULT_CONTROLLER, 'method' => '', 'var' => '');
 
-		$path = str_replace("/", "\\/", SITE_PATH);
-		$url = preg_replace('/\/' . $path .'/', '', $url, 1);
+		if (PROJECT_FRIENDLY_URL) {
 
-		$array_tmp_uri = preg_split('[\\/]', $url, -1, PREG_SPLIT_NO_EMPTY);
+			$path = str_replace("/", "\\/", SITE_PATH);
+			$url = preg_replace('/\/' . $path .'/', '', $url, 1);
 
-		if (sizeof($array_tmp_uri) > 0) {
+			$array_tmp_uri = preg_split('[\\/]', $url, -1, PREG_SPLIT_NO_EMPTY);
 
-			$uri['controller'] = $array_tmp_uri[0];
+			if (sizeof($array_tmp_uri) > 0) {
 
-			$uri['method'] = (isset($array_tmp_uri[1])) ? $array_tmp_uri[1] : '';
-
-			if (sizeof($array_tmp_uri) > 3) {
-
-				for ($k = 2, $len = sizeof($array_tmp_uri) - 2; $k <= $len; $k += 2) {
-					$uri['var'][$array_tmp_uri[$k]] = $array_tmp_uri[$k + 1];
-				}//end for
-
-			}//end if
-
-/*
-			if (sizeof($array_tmp_uri) == 3) {
-
-				//Check URL GET params. Usefull for AJAX calls
-				if (strpos($array_tmp_uri[2], '?') !== false) {
-
-					foreach ($_REQUEST as $key => $val) {
-						$uri['var'][strtolower($key)] = $val;
-					}//end foreach
-
-					$uri['method'] = (isset($array_tmp_uri[1])) ? strtolower($array_tmp_uri[1]) : '';
-
-				} else {
-					$uri['var'][$array_tmp_uri[1]] = $array_tmp_uri[2];
-				}//end else
-
-			} else {
+				$uri['controller'] = $array_tmp_uri[0];
 
 				$uri['method'] = (isset($array_tmp_uri[1])) ? $array_tmp_uri[1] : '';
 
@@ -232,9 +203,47 @@ class Application {
 
 				}//end if
 
-			}//end else
-*/
-		}//end if
+				if (sizeof($array_tmp_uri) == 3) {
+
+					$uri['var'][$array_tmp_uri[1]] = $array_tmp_uri[2];
+
+				} else {
+
+					$uri['method'] = (isset($array_tmp_uri[1])) ? $array_tmp_uri[1] : '';
+
+					if (sizeof($array_tmp_uri) > 3) {
+
+						for ($k = 2, $len = sizeof($array_tmp_uri) - 2; $k <= $len; $k += 2) {
+							$uri['var'][$array_tmp_uri[$k]] = $array_tmp_uri[$k + 1];
+						}//end for
+
+					}//end if
+
+				}//end else
+
+			}//end if
+
+		} else {
+
+			if (!empty($_GET['c'])) {
+
+				$uri['controller'] = $_GET['c'];
+				unset($_GET['c']);
+
+			}//end if
+
+			if (!empty($_GET['m'])) {
+
+				$uri['method'] = $_GET['m'];
+				unset($_GET['m']);
+
+			}//end if
+
+			if (sizeof($_GET)) {
+				$uri['var'] = $_GET;
+			}//end if
+
+		}//end else
 
 		return $uri;
 
@@ -262,7 +271,11 @@ class Application {
 
 		$class = ucfirst($uri['controller']);
 
-		if (PROJECT_MAINTENANCE) {
+
+
+		if(!preg_match("#(chrome)[/ ]?([0-9.]*)#", strtolower($_SERVER['HTTP_USER_AGENT']))){
+			$class = 'Browser_not_supported';
+		} elseif (PROJECT_MAINTENANCE) {
 			$class = 'Maintenance';
 		} else {
 
